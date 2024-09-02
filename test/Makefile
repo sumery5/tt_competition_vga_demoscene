@@ -5,7 +5,7 @@
 SIM ?= icarus
 TOPLEVEL_LANG ?= verilog
 SRC_DIR = $(PWD)/../src
-PROJECT_SOURCES = tt_um_sumery5_fiboscene.v
+PROJECT_SOURCES = tt_um_sumery5_fiboscene.v edge_decoder.v hvsync_generator.v multi_note_pwm_generator.v top_pwm_edgedecoder_v3.v
 
 ifneq ($(GATES),yes)
 
