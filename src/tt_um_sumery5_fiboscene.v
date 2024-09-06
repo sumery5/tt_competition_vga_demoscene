@@ -5,7 +5,7 @@
 
 `default_nettype none
 
-module tt_um_sumery5_fiboscene(
+module tt_um_vga_example(
   input  wire [7:0] ui_in,    // Dedicated inputs
   output wire [7:0] uo_out,   // Dedicated outputs
   input  wire [7:0] uio_in,   // IOs: Input path
@@ -15,6 +15,12 @@ module tt_um_sumery5_fiboscene(
   input  wire       clk,      // clock
   input  wire       rst_n     // reset_n - low to reset
 );
+
+//(pix_y >= 200 
+//(pix_y >= 240 
+//(pix_y >= 280 
+//(pix_y >= 320 
+//(pix_y >= 360 
 
 // Parametri SVGA 800x600 @60Hz
 parameter H_DISPLAY = 640;
@@ -35,7 +41,7 @@ parameter V_BACK_PORCH = 10;
 // Parametri per la nota
 parameter NOTE_WIDTH = 20;
 parameter NOTE_HEIGHT = 20;
-parameter NOTE_SPACE = 15;
+parameter NOTE_SPACE = 11'd41;
 
 reg [9:0] note_1x = H_DISPLAY; // Inizia fuori dallo schermo
 reg [9:0] note_1y = 191; // Posizione verticale della nota (terza linea del pentagramma)
@@ -139,7 +145,8 @@ reg trigger9;
 
 parameter FRAMES_PER_MOVE = 1; // Numero di frame prima di spostare la nota
 parameter NOTE_MOVES = 42; // Numero di frame prima di spostare la nota
-
+//parameter NOTE_MOVES = 640; // Numero di frame prima di spostare la nota
+  
   // VGA signals
   wire hsync;
   wire vsync;
@@ -196,7 +203,8 @@ always @(posedge clk or negedge rst_n) begin
         start <= 0;
         start_trigger <= 0;
     end else begin
-        if (global_frame_counter == NOTE_SPACE) begin
+      start <= start_trigger;
+        if (global_frame_counter == NOTE_SPACE ) begin
             global_frame_counter <= 0;
             start_trigger <= 1;
         end else begin
@@ -206,9 +214,10 @@ always @(posedge clk or negedge rst_n) begin
             end
         end
         
-        start <= start_trigger;
+        //start <= start_trigger;
     end
 end
+//assign start = start_trigger;
 
 reg [7:0] random_number;
 
@@ -402,17 +411,59 @@ always @(posedge clk or negedge rst_n) begin
         note_1counter <= 0;
         valid_1signal <= 0;
         started1 <= 0;
+        note_1y <= 0;
     end else begin
-        if (starting1 == 1) begin
+        note_1y <= note_1y;
+        if (starting1 == 1 && started1 == 0 && started2 == 0 && started3 == 0 && started3 == 0 && started3 == 0 && started3 == 0 && started3 == 0 && started3 == 0 && started3 == 0) begin
             started1 <= 1;
-        end
-        
-        if (started1 == 1) begin
+            note_1y <= 191;
+        end else
+        if (starting2 == 1 && started1 == 0 && started2 == 0 && started3 == 0 && started3 == 0 && started3 == 0 && started3 == 0 && started3 == 0 && started3 == 0 && started3 == 0) begin
+            started2 <= 1;
+            note_1y <= 210;
+        end else
+        if (starting3 == 1 && started1 == 0 && started2 == 0 && started3 == 0 && started3 == 0 && started3 == 0 && started3 == 0 && started3 == 0 && started3 == 0 && started3 == 0) begin
+            started3 <= 1;
+            note_1y <= 231;
+        end else
+        if (starting4 == 1 && started1 == 0 && started2 == 0 && started3 == 0 && started3 == 0 && started3 == 0 && started3 == 0 && started3 == 0 && started3 == 0 && started3 == 0) begin
+            started4 <= 1;
+            note_1y <= 251;
+        end else
+        if (starting5 == 1 && started1 == 0 && started2 == 0 && started3 == 0 && started3 == 0 && started3 == 0 && started3 == 0 && started3 == 0 && started3 == 0 && started3 == 0) begin
+            started5 <= 1;
+            note_1y <= 271;
+        end else
+        if (starting6 == 1 && started1 == 0 && started2 == 0 && started3 == 0 && started3 == 0 && started3 == 0 && started3 == 0 && started3 == 0 && started3 == 0 && started3 == 0) begin
+            started6 <= 1;
+            note_1y <= 290;
+        end else
+        if (starting7 == 1 && started1 == 0 && started2 == 0 && started3 == 0 && started3 == 0 && started3 == 0 && started3 == 0 && started3 == 0 && started3 == 0 && started3 == 0) begin
+            started7 <= 1;
+            note_1y <= 310;
+        end else
+        if (starting8 == 1 && started1 == 0 && started2 == 0 && started3 == 0 && started3 == 0 && started3 == 0 && started3 == 0 && started3 == 0 && started3 == 0 && started3 == 0) begin
+            started8 <= 1;
+            note_1y <= 330;
+        end else
+        if (starting9 == 1 && started1 == 0 && started2 == 0 && started3 == 0 && started3 == 0 && started3 == 0 && started3 == 0 && started3 == 0 && started3 == 0 && started3 == 0) begin
+            started1 <= 1;
+            note_1y <= 350;
+        end 
+        if (started1 == 1 || started2 == 1 || started3 == 1 || started4 == 1  || started5 == 1 || started6 == 1 || started7 == 1 || started8 == 1 || started9 == 1) begin
             if (note_1counter == NOTE_MOVES) begin
                 note_1counter <= 0;
                 frame_1counter <= 0;
                 valid_1signal <= 1;
                 started1 <= 0;
+                started2 <= 0;
+                started3 <= 0;
+                started4 <= 0;
+                started5 <= 0;
+                started6 <= 0;
+                started7 <= 0;
+                started8 <= 0;
+                started9 <= 0;
             end else if (frame_1counter == FRAMES_PER_MOVE) begin
                 frame_1counter <= 0;
                 valid_1signal <= 1;
@@ -422,7 +473,6 @@ always @(posedge clk or negedge rst_n) begin
             if (pix_x == H_TOTAL - 1) begin
                 if (pix_y == V_TOTAL - 1) begin
                     frame_1counter <= frame_1counter + 1;
-                    note_1counter <= note_1counter;
                 end
             end else begin
                 valid_1signal <= 0;
@@ -440,12 +490,13 @@ always @(posedge clk or negedge rst_n) begin
             note_1x <= H_DISPLAY - NOTE_WIDTH; // Inserisci la nota a destra dello schermo
         end else if ((valid_1signal == 0) && (frame_1counter == FRAMES_PER_MOVE)) begin
             note_1x <= note_1x - 15; // Muovi la nota a sinistra
-        end else begin
-            note_1x <= note_1x;
-        end
+            end else begin
+                note_1x <= note_1x;
+                note_1y <= note_1y;
+            end
     end
 end
-
+/*
 // Contatori per la sincronizzazione
 always @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
@@ -853,7 +904,7 @@ always @(posedge clk or negedge rst_n) begin
         end
     end
 end
-
+*/
  // Logica per disegnare il pentagramma e la chiave di violino
 always @(posedge clk) begin
     if (display_active) begin
@@ -874,50 +925,50 @@ else if ((started1 == 1) && (pix_x >= note_1x && pix_x < note_1x + NOTE_WIDTH) &
     G <= 2'b11;
     B <= 2'b00;
 end
-else if ((started2 == 1) && (pix_x >= note_2x && pix_x < note_2x + NOTE_WIDTH) &&
-         (pix_y >= note_2y && pix_y < note_2y + NOTE_HEIGHT)) begin
+else if ((started2 == 1) && (pix_x >= note_1x && pix_x < note_1x + NOTE_WIDTH) &&
+         (pix_y >= note_1y && pix_y < note_1y + NOTE_HEIGHT)) begin
     R <= 2'b10;
     G <= 2'b11;
     B <= 2'b00;
 end
-else if ((started3 == 1) && (pix_x >= note_3x && pix_x < note_3x + NOTE_WIDTH) &&
-    (pix_y >= note_3y && pix_y < note_3y + NOTE_HEIGHT)) begin
+else if ((started3 == 1) && (pix_x >= note_1x && pix_x < note_1x + NOTE_WIDTH) &&
+    (pix_y >= note_1y && pix_y < note_1y + NOTE_HEIGHT)) begin
     R <= 2'b00;
     G <= 2'b11;
     B <= 2'b00;
 end
-else if ((started4 == 1) && (pix_x >= note_4x && pix_x < note_4x + NOTE_WIDTH) &&
-    (pix_y >= note_4y && pix_y < note_4y + NOTE_HEIGHT)) begin
+else if ((started4 == 1) && (pix_x >= note_1x && pix_x < note_1x + NOTE_WIDTH) &&
+    (pix_y >= note_1y && pix_y < note_1y + NOTE_HEIGHT)) begin
     R <= 2'b11;
     G <= 2'b00;
     B <= 2'b11;
 end
-else if ((started5 == 1) && (pix_x >= note_5x && pix_x < note_5x + NOTE_WIDTH) &&
-    (pix_y >= note_5y && pix_y < note_5y + NOTE_HEIGHT)) begin
+else if ((started5 == 1) && (pix_x >= note_1x && pix_x < note_1x + NOTE_WIDTH) &&
+    (pix_y >= note_1y && pix_y < note_1y + NOTE_HEIGHT)) begin
     R <= 2'b11;
     G <= 2'b11;
     B <= 2'b00;
 end
-else if ((started6 == 1) && (pix_x >= note_6x && pix_x < note_6x + NOTE_WIDTH) &&
-    (pix_y >= note_6y && pix_y < note_6y + NOTE_HEIGHT)) begin
+else if ((started6 == 1) && (pix_x >= note_1x && pix_x < note_1x + NOTE_WIDTH) &&
+    (pix_y >= note_1y && pix_y < note_1y + NOTE_HEIGHT)) begin
     R <= 2'b00;
     G <= 2'b00;
     B <= 2'b11;
 end
-else if ((started7 == 1) && (pix_x >= note_7x && pix_x < note_7x + NOTE_WIDTH) &&
-    (pix_y >= note_7y && pix_y < note_7y + NOTE_HEIGHT)) begin
+else if ((started7 == 1) && (pix_x >= note_1x && pix_x < note_1x + NOTE_WIDTH) &&
+    (pix_y >= note_1y && pix_y < note_1y + NOTE_HEIGHT)) begin
     R <= 2'b11;
     G <= 2'b00;
     B <= 2'b00;
 end
-else if ((started8 == 1) && (pix_x >= note_8x && pix_x < note_8x + NOTE_WIDTH) &&
-    (pix_y >= note_8y && pix_y < note_8y + NOTE_HEIGHT)) begin
+else if ((started8 == 1) && (pix_x >= note_1x && pix_x < note_1x + NOTE_WIDTH) &&
+    (pix_y >= note_1y && pix_y < note_1y + NOTE_HEIGHT)) begin
     R <= 2'b00;
     G <= 2'b11;
     B <= 2'b11;
 end
-else if ((started9 == 1) && (pix_x >= note_9x && pix_x < note_9x + NOTE_WIDTH) &&
-    (pix_y >= note_9y && pix_y < note_9y + NOTE_HEIGHT)) begin
+else if ((started9 == 1) && (pix_x >= note_1x && pix_x < note_1x + NOTE_WIDTH) &&
+    (pix_y >= note_1y && pix_y < note_1y + NOTE_HEIGHT)) begin
     R <= 2'b11;
     G <= 2'b10;
     B <= 2'b00;
@@ -977,6 +1028,5 @@ end
     );
   
 endmodule
-
 
 
